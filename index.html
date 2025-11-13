@@ -3,81 +3,676 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이주연 - 시각 디자이너</title>
+    <title>이주연 | Visual Designer Portfolio</title>
     <style>
+        /* =========================
+           전역 스타일 및 리셋
+        ========================= */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           색상 변수 (클래식 블루)
+        ========================= */
+        :root {
+            --primary: #1565C0;
+            --primary-light: #1976D2;
+            --primary-lighter: #42A5F5;
+            --primary-lightest: #E3F2FD;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --white: #ffffff;
+        }
+
+        /* =========================
+           히어로 섹션 - 매거진 스타일
+        ========================= */
+        .hero {
             min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 0 5%;
+            background: linear-gradient(135deg, var(--primary-lightest) 0%, var(--white) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 매거진 스타일 배경 장식 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: var(--primary-lighter);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-name {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 0.9;
+            margin-bottom: 1rem;
+            letter-spacing: -3px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-name:hover {
+            transform: translateX(10px);
+        }
+
+        .hero-name-en {
+            font-size: 2rem;
+            color: var(--text-light);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-title {
+            font-size: 1.5rem;
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            max-width: 500px;
+        }
+
+        .hero-image {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #333;
         }
-        
-        .container {
-            text-align: center;
-            background: white;
-            padding: 80px 60px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1s ease-in;
+
+        .hero-image-container {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            transition: transform 0.3s ease;
         }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        .hero-image-container:hover {
+            transform: scale(1.02);
         }
-        
-        h1 {
-            font-size: 4rem;
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-shadow: 20px 20px 0px var(--primary-lightest);
+        }
+
+        /* =========================
+           About Me 섹션
+        ========================= */
+        .about {
+            padding: 8rem 5%;
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover img {
+            transform: translateY(-10px);
+        }
+
+        .about-content {
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-lighter);
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* =========================
+           Skills 섹션
+        ========================= */
+        .skills {
+            padding: 8rem 5%;
+            background: var(--primary-lightest);
+        }
+
+        .skills-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background: var(--white);
+            padding: 2rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(21, 101, 192, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-        
-        p {
-            font-size: 1.5rem;
-            color: #666;
-            font-weight: 300;
-            letter-spacing: 0.5px;
+
+        .skill-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
         }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 60px 40px;
+
+        /* =========================
+           Projects 섹션 - 매거진 레이아웃
+        ========================= */
+        .projects {
+            padding: 8rem 5%;
+            background: var(--white);
+        }
+
+        .projects-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:nth-child(1) {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+
+        .project-card:nth-child(2) {
+            grid-column: 2 / 3;
+        }
+
+        .project-card:nth-child(3) {
+            grid-column: 2 / 3;
+        }
+
+        .project-card:nth-child(4) {
+            grid-column: 1 / 3;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(21, 101, 192, 0.95), transparent);
+            padding: 2rem;
+            transform: translateY(60%);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateY(0);
+        }
+
+        .project-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--white);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           Contact 섹션
+        ========================= */
+        .contact {
+            padding: 8rem 5%;
+            background: var(--primary);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .contact .section-title {
+            color: var(--white);
+        }
+
+        .contact .section-title::after {
+            background: var(--white);
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        .contact-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--white);
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: var(--primary-lightest);
+            transform: translateY(-3px);
+        }
+
+        /* =========================
+           Footer
+        ========================= */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary-lighter);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--white);
+        }
+
+        /* =========================
+           반응형 디자인
+        ========================= */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 4rem 5%;
             }
-            
-            h1 {
+
+            .hero-name {
+                font-size: 4rem;
+            }
+
+            .hero-image {
+                margin-top: 3rem;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card:nth-child(1),
+            .project-card:nth-child(4) {
+                grid-column: 1;
+                grid-row: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-name {
                 font-size: 3rem;
             }
-            
-            p {
-                font-size: 1.2rem;
+
+            .hero-name-en {
+                font-size: 1.5rem;
             }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-image-container {
+                width: 300px;
+                height: 400px;
+            }
+        }
+
+        /* =========================
+           스크롤 애니메이션
+        ========================= */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="images/profile.jpg" alt="이주연 프로필 사진" class="profile-img">
-        <h1>이주연</h1>
-        <p>시각 디자이너 이주연입니다.</p>
-    </div>
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-name">이주연</h1>
+            <p class="hero-name-en">JUYEON LEE</p>
+            <h2 class="hero-title">Visual Designer</h2>
+            <p class="hero-description">책임을 다하는 디자이너입니다.</p>
+        </div>
+        <div class="hero-image">
+            <div class="hero-image-container">
+                <img src="https://via.placeholder.com/400x500/1565C0/FFFFFF?text=Juyeon+Lee" alt="이주연 프로필">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me 섹션 -->
+    <section class="about fade-in">
+        <div class="about-image">
+            <img src="https://via.placeholder.com/400x500/42A5F5/FFFFFF?text=About+Me" alt="About Me">
+        </div>
+        <div class="about-content">
+            <h2 class="section-title">About Me</h2>
+            <p class="about-text">
+                안녕하세요, 비주얼 디자이너 이주연입니다. 
+                저는 사용자 경험을 최우선으로 생각하며, 시각적으로 아름답고 
+                기능적인 디자인을 만드는 것을 목표로 합니다.
+            </p>
+            <p class="about-text">
+                다양한 프로젝트를 통해 브랜드 아이덴티티, UI/UX 디자인, 
+                그래픽 디자인 등의 경험을 쌓아왔습니다. 
+                항상 새로운 도전을 즐기며, 디자인을 통해 세상에 긍정적인 
+                영향을 미치고 싶습니다.
+            </p>
+            <p class="about-text">
+                책임감 있게 프로젝트를 완수하고, 클라이언트와의 소통을 
+                중요하게 생각합니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- Skills 섹션 -->
+    <section class="skills fade-in">
+        <div class="skills-container">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3 class="skill-name">Visual Design</h3>
+                    <p class="skill-description">
+                        브랜드 아이덴티티, 타이포그래피, 색채 이론을 활용한 
+                        시각적 커뮤니케이션 디자인
+                    </p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    <h3 class="skill-name">UI/UX Design</h3>
+                    <p class="skill-description">
+                        사용자 중심의 인터페이스 설계 및 프로토타이핑, 
+                        사용성 테스트
+                    </p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <h3 class="skill-name">Digital Design</h3>
+                    <p class="skill-description">
+                        웹 및 모바일 플랫폼을 위한 반응형 디자인 및 
+                        인터랙티브 경험 설계
+                    </p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">✏️</div>
+                    <h3 class="skill-name">Graphic Design</h3>
+                    <p class="skill-description">
+                        포스터, 브로슈어, 패키지 디자인 등 다양한 인쇄물 제작
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects 섹션 -->
+    <section class="projects fade-in">
+        <div class="projects-container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <!-- 프로젝트 1 -->
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x800/1565C0/FFFFFF?text=Brand+Identity" alt="Project 1" class="project-image">
+                    <div class="project-overlay">
+                        <h3 class="project-title">브랜드 아이덴티티 디자인</h3>
+                        <p class="project-description">
+                            신규 스타트업의 브랜드 아이덴티티 시스템을 구축했습니다. 
+                            로고, 컬러 팔레트, 타이포그래피를 포함한 전체 브랜드 가이드라인을 제작했습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 2 -->
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400/1976D2/FFFFFF?text=Mobile+App+UI" alt="Project 2" class="project-image">
+                    <div class="project-overlay">
+                        <h3 class="project-title">모바일 앱 UI 디자인</h3>
+                        <p class="project-description">
+                            여행 플래너 모바일 앱의 전체 UI/UX를 디자인했습니다. 
+                            직관적인 사용자 경험을 제공합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 3 -->
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/600x400/42A5F5/FFFFFF?text=Web+Design" alt="Project 3" class="project-image">
+                    <div class="project-overlay">
+                        <h3 class="project-title">웹사이트 리디자인</h3>
+                        <p class="project-description">
+                            기업 웹사이트의 리뉴얼 프로젝트를 진행했습니다. 
+                            현대적이고 반응형 디자인을 적용했습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 프로젝트 4 -->
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/1200x400/E3F2FD/1565C0?text=Editorial+Design" alt="Project 4" class="project-image">
+                    <div class="project-overlay">
+                        <h3 class="project-title">에디토리얼 디자인</h3>
+                        <p class="project-description">
+                            매거진 레이아웃 디자인 프로젝트입니다. 
+                            가독성과 시각적 흥미를 동시에 고려한 레이아웃을 구성했습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact 섹션 -->
+    <section class="contact fade-in">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-content">
+            <p class="contact-text">
+                프로젝트 문의나 협업 제안이 있으시다면 언제든 연락주세요!
+            </p>
+            <div class="contact-links">
+                <a href="mailto:juyeon@example.com" class="contact-link">
+                    📧 juyeon@example.com
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="contact-link">
+                    💼 LinkedIn
+                </a>
+                <a href="https://instagram.com" target="_blank" class="contact-link">
+                    📸 Instagram
+                </a>
+                <a href="https://behance.net" target="_blank" class="contact-link">
+                    🎨 Behance
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 이주연. Powered by <a href="https://ai.triz.kr" target="_blank">AI Portfolio Workshop</a>.</p>
+    </footer>
+
+    <!-- JavaScript - 스크롤 애니메이션 -->
+    <script>
+        // 스크롤 애니메이션 함수
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                // 요소가 화면에 보이면 visible 클래스 추가
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // 페이지 로드 시 및 스크롤 시 애니메이션 실행
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // 부드러운 스크롤 효과
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
